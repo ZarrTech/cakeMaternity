@@ -1,38 +1,57 @@
 import { HiOutlineBars3BottomLeft } from "react-icons/hi2";
 import { RiCloseCircleLine } from "react-icons/ri";
-import React, { useState } from "react";
+import { useState, FC } from "react";
 import clsx from "clsx";
 import Submenu from "./Submenu";
 
- export interface SubMenu {
+export interface SubMenu {
   name: string;
   menus: string[];
+ 
 }
 
-const MobileNavbar: React.FC = () => {
-  //submenu data
-  const subMenuList: SubMenu[] = [
-    {
-      name: 'budget cakes',
-      menus: ['single-layer cakes', 'double-Layered cakes', 'triple-layered cakes', 'four-layered cakes']
-    },
-    {
-      name: 'special cakes',
-      menus: ['ice cream cakes', "children's cake", 'dessert cakes', 'square cakes', 'football fan cakes']
-    },
-    {
-      name: 'fondant',
-      menus: ['single-step cakes', 'two-step cakes', 'three-step cakes', 'four-step cakes']
-    },
-    {
-      name: 'wedding',
-      menus: ['reception wedding cakes', 'traditional wedding cakes']
-    }
-  ]
+//submenu data
+export const subMenuList: SubMenu[] = [
+  {
+    name: "layered-cakes",
+    menus: [
+      "single-layered-cakes",
+      "double-layered-cakes",
+      "three-layered-cakes",
+      "four-layered-cakes",
+    ],
+  },
+  {
+    name: "special-cakes",
+    menus: [
+      "ice-cream-cakes",
+      "children-cakes",
+      "dessert-cakes",
+      "square-cakes",
+      "football-cakes",
+    ],
+   
+  },
+  {
+    name: "step-cakes",
+    menus: [
+      "single-step-cakes",
+      "two-step-cakes",
+      "three-step-cakes",
+      "four-step-cakes",
+    ],
+  },
+  {
+    name: "wedding",
+    menus: ["reception-wedding-cakes", "traditional-wedding-cakes"],
+  },
+];
 
-  const [toggleDrawer, setToggleDrawer] = useState(true);
+const MobileNavbar: FC = () => {
+  const [toggleDrawer, setToggleDrawer] = useState(false);
+
   return (
-    <div className=" relative navbar bg-base-100 sm:hidden flex w-full p-4">
+    <div className=" relative navbar bg-base-100 lg:hidden  flex w-full p-4">
       <button
         className="btn"
         onClick={() => {
@@ -45,7 +64,7 @@ const MobileNavbar: React.FC = () => {
       {/* drawer menu */}
       <div
         className={clsx(
-          " fixed  w-screen h-full top-0 left-0 bg-black/10 backdrop-blur-sm -translate-x-full transition-all duration-300  ease-out z-50",
+          " fixed  w-screen h-full top-0 left-0 bg-black/10 backdrop-blur-sm  -translate-x-full transition-all duration-300  ease-out z-50",
           toggleDrawer && "translate-x-0"
         )}
       >
@@ -62,9 +81,9 @@ const MobileNavbar: React.FC = () => {
           <div className=" mt-[5rem] px-4">
             {subMenuList?.map((menu) => (
               <div key={menu.name}>
-                <Submenu data={menu } />
+                <Submenu data={menu} setToggleDrawer={setToggleDrawer} />
               </div>
-          ))}
+            ))}
           </div>
         </section>
       </div>
