@@ -2,7 +2,7 @@ import { SubMenu, subMenuList } from "./MobileNavbar";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { NavLink } from "react-router-dom";
 import { FC, useState } from "react";
-import { Search, Cart, Avatar } from "../container";
+import { Search, Cart, Avatar } from "../component";
 import clsx from "clsx";
 import { easeInOut, motion } from "framer-motion";
 const DesktopNavbar: FC = () => {
