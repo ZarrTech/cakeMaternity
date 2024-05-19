@@ -1,4 +1,4 @@
-import { SubMenu, subMenuList } from "./MobileNavbar";
+import { subMenuList } from "./MobileNavbar";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { NavLink } from "react-router-dom";
 import { FC, useState } from "react";
@@ -26,54 +26,13 @@ console.log(submenuState);
           CM
         </NavLink>
         <nav className="relative flex justify-center  items-center">
-          {subMenuList.map((menu, i) => {
-            const { name, menus } = menu;
-
-            return (
-              <div key={i} className=" text-xl relative flex items-center">
-                <button
-                  className="flex items-center ml-4"
-                  onClick={() => toggleSubmenu(i)}
-                >
-                  <p>{name}</p>
-                  <span
-                    className={clsx(
-                      !submenuState[i] && "rotate-180",
-                      "duration-500"
-                    )}
-                  >
-                    <IoMdArrowDropdown />
-                  </span>
-                </button>
-
-                <motion.ul
-                  animate={{ height: submenuState[i] ? "fit-content" : 0 }}
-                  transition={{ duration: 0.5, ease: easeInOut }}
-                  className={clsx(
-                    "text-[1.1rem] absolute top-14 capitalize mr-3 p-1 overflow-hidden bg-black",
-                    !submenuState[i] && "hidden"
-                  )}
-                >
-                  {menus.map((list, i) => (
-                    <li
-                      key={i}
-                      className=" list-none flex items-start content-center justify-between mb-2 w-[17rem]  duration-500 "
-                    >
-                      <NavLink
-                        to={`/${list}`}
-                        className=" border-b border-white/20"
-                      >
-                        {list}
-                      </NavLink>
-                      <span className=" -rotate-90 ">
-                        <IoMdArrowDropdown />
-                      </span>
-                    </li>
-                  ))}
-                </motion.ul>
+          <div className=" text-xl flex items-center gap-10">
+            {subMenuList.map((menu, i) => (
+              <div key={i}>
+                <NavLink to={`/${menu}`}>{menu}</NavLink>
               </div>
-            );
-          })}
+            ))}
+          </div>
         </nav>
         <div className=" flex justify-center items-center">
           <span className=" mr-16">

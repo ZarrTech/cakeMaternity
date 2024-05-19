@@ -1,12 +1,10 @@
-import { useParams } from "react-router-dom"
 
 
 
-
-const BudjetCakes = () => {
-  const { bID } = useParams();
+const BudgetCakes = () => {
+  
   return (
-    <div>budjet/{bID }</div>
+    <div></div>
   )
 }
-export default BudjetCakes
+export default BudgetCakes

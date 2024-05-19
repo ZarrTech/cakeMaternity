@@ -7,15 +7,31 @@ require("express-async-errors");
 
 app.use(express.json());
 
-app.get('/', (req, res) => {
-    res.json('hello Mum')
+// const storage = multer.diskStorage({
+//     destination: (req, file, cb) => {
+//         console.log(file);
+//         cb(null, 'upload')
+//     },
+
+//     filename: (req, file, cb) => {
+//         cb(null, file.originalname)
+//     }
+// })
+
+// const upload = multer({storage});
+
+app.post('/api/upload',  (req, res) => {
+    res.json(req.file)
 })
+
 
 // routers
 const productRouter = require("./routes/product");
+const categoryRouter = require("./routes/category");
 const authRouter = require("./routes/auth");
 app.use("/auth", authRouter);
-app.use("/product-category", productRouter);
+app.use("/product", productRouter);
+app.use("/category", categoryRouter);
 
 // error Middleware
 const { notFound, errorHandler } = require("./middleware");

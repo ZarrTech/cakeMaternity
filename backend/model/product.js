@@ -3,13 +3,13 @@ const  mongoose  = require("mongoose");
 
 const productSchema = new mongoose.Schema(
   {
-    category: {
-      type: String,
-      required: [true, "please provide category"],
-    },
     name: {
       type: String,
       required: [true, "please provide name"],
+    },
+    category: {
+      type: String,
+      required: [true, "please provide category"],
     },
     price: {
       type: Number,
@@ -19,12 +19,13 @@ const productSchema = new mongoose.Schema(
     stockQuantity: {
       type: Number,
       required: [true, "please provide at least one product"],
+      min: [1, "stock quantity should be above 1"],
     },
     imageUrl: {
       type: String,
-      required: [true, "please provide image"],
+      default: null,
     },
-    desc: {
+    description: {
       type: String,
       required: [true, "please provide description"],
     },
