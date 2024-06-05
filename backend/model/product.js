@@ -25,9 +25,13 @@ const productSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
-    description: {
+    desc: {
       type: String,
       required: [true, "please provide description"],
+    },
+    isFeatured: {
+      type: Boolean,
+      default: false
     },
   },
   { timestamps: true }

@@ -8,7 +8,7 @@ import { IoIosSearch } from "react-icons/io";
 
 
 //submenu data
-export const subMenuList:String[] = ['budget', 'children', 'dessert', 'wedding'];
+export const subMenuList:String[] = ['budget', 'children', 'dessert', 'wedding', 'store'];
 
 const MobileNavbar: FC = () => {
   const [toggleDrawer, setToggleDrawer] = useState(false);

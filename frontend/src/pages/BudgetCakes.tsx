@@ -1,10 +1,11 @@
+import Sort from "../component/Sort"
 
 
 
 const BudgetCakes = () => {
   
   return (
-    <div></div>
+    <Sort/>
   )
 }
 export default BudgetCakes

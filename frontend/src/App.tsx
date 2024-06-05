@@ -1,36 +1,35 @@
 import {
-  createBrowserRouter,
-  createRoutesFromElements,
+  Routes,
   Route,
-  RouterProvider,
+  useLocation
 } from "react-router-dom";
-import {
-  BudgetCakes,
-  Weddings,
-  ChildrenCake,
-  DessertCake,
-  Home,
-} from "./pages";
-import RootLayout from "./layout/RootLayout";
-import ErrorPage from "./pages/ErrorPage";
+import { appRoutes } from "./router";
+import { SwitchTransition, CSSTransition } from "react-transition-group";
+import { FC, Suspense } from "react"
 
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route path="/" element={<RootLayout />} errorElement={<ErrorPage />}>
-      <Route path="/" element={<Home />} />
-      <Route path="/budget" element={<BudgetCakes/>} />
-      <Route path="/wedding" element={<Weddings />} />
-      <Route path="/children" element={<ChildrenCake />} />
-      <Route path="/dessert" element={<DessertCake />} />
-    </Route>
-  )
-);
 
-function App() {
+const App: FC = () => {
+ const location = useLocation()
   return (
-    <>
-      <RouterProvider router={router} />
-    </>
+    <div className="">
+      <SwitchTransition>
+        <CSSTransition key={location.pathname} timeout={300} classNames="fade">
+          <Suspense fallback={<h1>loading...</h1>}>
+            <Routes location={location}>
+              {appRoutes.map((route) => {
+                return (
+                  <Route
+                    key={route.path}
+                    path={route.path}
+                    element={<route.component />}
+                  />
+                );
+              })}
+            </Routes>
+          </Suspense>
+        </CSSTransition>
+      </SwitchTransition>
+    </div>
   );
 }
 

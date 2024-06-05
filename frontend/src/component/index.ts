@@ -1,12 +1,27 @@
 import DesktopNavbar from "./DesktopNavbar";
 import MobileNavbar from "./MobileNavbar";
-import Dashboard from "./Dashboard";
-import Hero from "./Hero";
-import ThreeElementGrid from "./ThreeElementGrid";
-import DeliveryCount from "./DeliveryCount";
+import Hero from "./home/Hero";
+import ThreeElementGrid from "./home/ThreeElementGrid";
+import DeliveryCount from "./home/DeliveryCount";
 import Cart from "./Cart";
 import Avatar from "./Avatar";
 import Search from "./Search";
+import Featured from "./home/Featured";
+import Testimonials from "./home/Testimonials";
+import CTA from "./home/CTA";
+import Footer from "./Footer";
 
-
-export {DesktopNavbar, MobileNavbar, Dashboard, Hero, ThreeElementGrid, DeliveryCount, Avatar, Cart, Search}
+export {
+  DesktopNavbar,
+  MobileNavbar,
+  Hero,
+  ThreeElementGrid,
+  DeliveryCount,
+  Avatar,
+  Cart,
+  Search,
+  Featured,
+  Testimonials,
+  CTA,
+  Footer,
+};

@@ -53,8 +53,71 @@ const upload = multer({ storage });
 
 // getAllProduct
 const getAllProduct = async (req, res) => {
-  const product = await Products.find({});
-  res.status(StatusCodes.OK).json({ products: product, count: product.length });
+  const { name, category, sort, fields, numericFilters, page, limit } = req.query
+const queryObject = {}
+
+  // name filtering
+  if (name) {
+    queryObject.name = {$regex: name, $options: 'i'}
+  }
+  // category filtering
+  if (category) {
+    queryObject.category = category
+  }
+
+  if (numericFilters) {
+     const operatorMap = {
+       ">": "$gt",
+       ">=": "$gte",
+       "=": "$eq",
+       "<": "$lt",
+       "<=": "$lte",
+     };
+     const regEx = /\b(<|>|>=|=|<=)\b/g;
+
+    let filters = numericFilters.replace(regEx, (match) => `-${operatorMap[match]}-`);
+    console.log(filters);
+    const options = ["price", "stockQuantity"]
+    filters = filters.split(',').forEach((item) => {
+      const [field, operator, value] = item.split('-')
+      if (options.includes(field)) {
+        queryObject[field] = {[operator]: Number(value)}
+      }
+    })
+
+  }
+// sort and fields filtering
+  let result = Products.find(queryObject);
+  let sortOption;
+  switch (sort) {
+    case 'popularity': sortOption = { popularity: 1 }
+      break;
+    case 'latest': sortOption = { createdAt: -1 }
+      break;
+    case 'low to high': sortOption = { price: 1 }
+      break;
+    case 'high to low': sortOption = { price: -1 }
+      break;
+    default: sortOption = {}
+  }
+
+  result = result.sort(sortOption)
+
+  // fields
+  if (fields) {
+    const fieldList = fields.split(',').join(' ')
+    result = result.select(fieldList)
+  }
+
+  // pagination
+  const pageNumber = Number(page) || 1
+  const limitNumber = Number(limit) || 33
+  const skip = (pageNumber -1 ) * limitNumber
+  result = result.skip(skip).limit(limitNumber)
+
+  // await product
+  const product = await result
+  res.status(StatusCodes.OK).json({ products: product, count: product.length, page:page, pages: Math.ceil(product.length / limitNumber)});
 };
 
 // getSingleProduct
@@ -62,7 +125,7 @@ const getSingleProduct = async (req, res) => {
   const { id: productId } = req.params;
   const product = await Products.findOne({ _id: productId });
   if (!product) {
-    throw new NotFoundError(`no jobs with id of ${productId}`);
+    throw new NotFoundError(`no jobs with id of ${productId}`)
   }
 
   res.status(StatusCodes.OK).json({ product });
@@ -72,7 +135,7 @@ const getSingleProduct = async (req, res) => {
 const createProduct = async (req, res) => {
   
     const fileName = req.file.filename;
-    const basePath = `${req.protocol}://${req.get("host")}/images/`; // Update with correct base URL
+    const basePath = `${req.protocol}://${req.get("host")}/images/`;
     const productData = {
       category: req.body.category,
       name: req.body.name,

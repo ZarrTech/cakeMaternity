@@ -1,6 +1,5 @@
-import {  Outlet } from "react-router-dom";
 import { MobileNavbar, DesktopNavbar } from ".";
-
+import { Outlet } from "react-router-dom";
 const Navbar = () => {
   return (
     <>
@@ -8,14 +7,14 @@ const Navbar = () => {
         <nav className=" w-full flex items-center">
           {/* Mobile Navbar */}
           <MobileNavbar />
-          
+
           {/* Desktop Navbar */}
-          <DesktopNavbar/>
+          <DesktopNavbar />
+          <main>
+            <Outlet />
+          </main>
         </nav>
       </header>
-      <main>
-        <Outlet />
-      </main>
     </>
   );
 };
