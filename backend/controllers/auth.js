@@ -6,7 +6,8 @@ const { StatusCodes } = require("http-status-codes");
 const register = async (req, res) => {
   const user = await User.create({ ...req.body });
   const token = user.createJWT();
-  res.status(StatusCodes.CREATED).json({ user, token });
+  console.log(token);
+  res.status(StatusCodes.CREATED).json({ name: user.name, token });
 };
 
 // login
@@ -15,7 +16,7 @@ const login = async (req, res) => {
   if (!email || !password) {
     throw new BadRequestError("please provide email or password");
   }
-  const user = User.findOne({ email });
+  const user = await User.findOne({ email });
   if (!user) {
     throw new UnauthenticatedError("invalid credentials");
   }
@@ -25,7 +26,8 @@ const login = async (req, res) => {
     throw new UnauthenticatedError("invalid credentials");
   }
   const token = user.createJWT();
-  res.status(StatusCodes.OK).json({ user: { name: user.name }, token });
+  console.log(token);
+  res.status(StatusCodes.OK).json({name: user.name , token });
 };
 
 module.exports = { register, login };

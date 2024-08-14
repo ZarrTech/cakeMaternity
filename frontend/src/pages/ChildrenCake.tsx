@@ -1,6 +1,6 @@
+import ProductList from "./ProductList";
+
 const ChildrenCake = () => {
-  return (
-    <div>ChildrenCake</div>
-  )
-}
-export default ChildrenCake
+  return <ProductList category="children" />;
+};
+export default ChildrenCake;

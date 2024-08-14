@@ -1,5 +1,5 @@
 import Avatar from "./Avatar";
-import Cart from "./Cart";
+import Cart from "./CartIcon";
 
 const RightNav = () => {
   return (
@@ -12,5 +12,5 @@ const RightNav = () => {
       </span>
     </div>
   );
-}
-export default RightNav
+};
+export default RightNav;

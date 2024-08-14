@@ -15,7 +15,7 @@ router
   .get(getAllProduct)
   .post(upload.single("imageUrl"), createProduct);
 router
-  .route('/:id')
+  .route('/product/:id')
   .get(getSingleProduct)
   .patch(editProduct)
   .delete(deleteProduct);

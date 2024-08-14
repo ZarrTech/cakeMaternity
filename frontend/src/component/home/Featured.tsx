@@ -1,19 +1,22 @@
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../../store";
 import { useEffect } from "react";
-import { getProductItems } from "../../features/cart/cartSlice";
+import { getProductItems } from "../../features/cart/productSlice";
 import Button from "../Button";
 import HorizontalLine from "../HorizontalLine";
 
 const Featured = () => {
   const { productItems, isLoading, sortCriteria, page } = useSelector(
-    (state: RootState) => state.cart
+    (state: RootState) => state.product
   );
 
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    dispatch(getProductItems({ sortCriteria, page }));
+    dispatch(getProductItems({
+      sortCriteria, page,
+      category: ""
+    }));
   }, []);
 
   if (isLoading) {

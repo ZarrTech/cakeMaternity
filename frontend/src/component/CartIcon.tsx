@@ -1,14 +1,14 @@
 import { FC } from "react";
 import { useSelector } from "react-redux";
 
-interface cart {
+interface Cart {
   cart: any;
   amount: Number,
   total: Number
 }
 
-const Cart:FC = () => {
-  const { amount, total } = useSelector((state:cart) => state.cart);
+const CartIcon:FC = () => {
+  const { amount, total } = useSelector((state:Cart) => state.cart);
   return (
     <div className="dropdown dropdown-end">
       <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
@@ -45,4 +45,4 @@ const Cart:FC = () => {
     </div>
   );
 }
-export default Cart
+export default CartIcon

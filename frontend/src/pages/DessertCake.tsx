@@ -1,6 +1,6 @@
+import ProductList from "./ProductList";
+
 const DessertCake = () => {
-  return (
-    <div>DessertCake</div>
-  )
-}
-export default DessertCake
+  return <ProductList category="dessert" />;
+};
+export default DessertCake;

@@ -1,5 +1,5 @@
 import Search from "../component/Search";
-import Cart from "../component/Cart";
+import CartIcon from "../component/CartIcon";
 import Avatar from "../component/Avatar";
 
-export {Search, Avatar, Cart}
+export { Search, Avatar, CartIcon };

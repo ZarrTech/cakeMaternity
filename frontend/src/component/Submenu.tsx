@@ -19,7 +19,7 @@ const Submenu: FC<SubmenuProps> = ({ data, setToggleDrawer }) => {
           " list-none text-xl mt-3 capitalize  flex flex-col items-center"
         )}
       >
-        <NavLink to={`/${data}`} className={clsx("capitalize")}onClick={()=>setToggleDrawer(false)}>
+        <NavLink to={data === 'store'?`/${data}`:`/products/${data}`} className={clsx("capitalize")}onClick={()=>setToggleDrawer(false)}>
           {data}
         </NavLink>
       </li>

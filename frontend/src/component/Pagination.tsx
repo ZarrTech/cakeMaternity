@@ -1,22 +1,20 @@
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../store";
-import { setCurrentPage } from "../features/cart/cartSlice";
+import { setCurrentPage } from "../features/cart/productSlice";
 
 const Pagination = () => {
-
   const dispatch = useDispatch<AppDispatch>();
   const { page, pages, count } = useSelector((state: RootState) => state.cart);
   console.log(pages);
-  
-const handlePageChange = (newPage: number) => {
-  dispatch(setCurrentPage(newPage));
-};
-  
+
+  const handlePageChange = (newPage: number) => {
+    dispatch(setCurrentPage(newPage));
+  };
 
   return (
     <section className=" flex justify-center items-center gap-4">
       <div className="pagination-controls">
-        {Array.from({length: pages}, (_, index) => (
+        {Array.from({ length: pages }, (_, index) => (
           <button
             key={index}
             onClick={() => handlePageChange(index + 1)}

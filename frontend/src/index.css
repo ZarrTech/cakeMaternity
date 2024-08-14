@@ -155,3 +155,7 @@ body {
     margin-top: 0;
   }
 }
+
+.auth-btn{
+  @apply text-[0.90rem] capitalize bg-orange px-3 py-1 font-medium text-black
+}

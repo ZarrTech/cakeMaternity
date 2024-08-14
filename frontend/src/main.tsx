@@ -5,8 +5,7 @@ import './index.css'
 import { store } from './store'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
-import Navbar from './component/Navbar.tsx'
-import Footer from './component/Footer.tsx'
+import { Navbar, Footer } from './component'
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Provider store={store}>

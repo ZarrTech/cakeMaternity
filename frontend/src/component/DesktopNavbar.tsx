@@ -1,20 +1,22 @@
 import { subMenuList } from "./MobileNavbar";
 import { NavLink } from "react-router-dom";
 import { FC} from "react";
-import { Search, Cart, Avatar } from "../component";
+import { Search, CartIcon, Avatar, Logo } from "../component";
 const DesktopNavbar: FC = () => {
   
   return (
     <section className=" w-full hidden lg:flex bg-black px-3 p-1 text-xl">
       <header className=" flex justify-between items-center w-full">
-        <NavLink to="/" className="mr-3 text-[1.7rem] font-bold">
-          CM
-        </NavLink>
+        <Logo />
         <nav className="relative flex justify-center  items-center">
           <div className=" text-xl flex items-center gap-10">
             {subMenuList.map((menu, i) => (
               <div key={i}>
-                <NavLink to={`/${menu}`}>{menu}</NavLink>
+                <NavLink
+                  to={menu === "store" ? `/${menu}` : `/products/${menu}`}
+                >
+                  {menu}
+                </NavLink>
               </div>
             ))}
           </div>
@@ -24,7 +26,7 @@ const DesktopNavbar: FC = () => {
             <Search />
           </span>
           <span>
-            <Cart />
+            <CartIcon />
           </span>
           <span>
             <Avatar />

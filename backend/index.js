@@ -31,10 +31,12 @@ app.post('/api/upload',  (req, res) => {
 // routers
 const productRouter = require("./routes/product");
 const categoryRouter = require("./routes/category");
+const cartRouter = require('./routes/cart')
 const authRouter = require("./routes/auth");
 app.use("/auth", authRouter);
-app.use("/product",  productRouter);
+app.use("/products",  productRouter);
 app.use("/category", categoryRouter);
+app.use('/cart', auth, cartRouter)
 
 // error Middleware
 const { notFound, errorHandler } = require("./middleware");

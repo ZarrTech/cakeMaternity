@@ -1,103 +1,126 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
+import api from "../../utils/api";
 const baseUrl = import.meta.env.VITE_API_URL;
 
-export interface ProductItem {
-  _id: string;
-  name: string;
-  price: number;
-  imageUrl: string;
-  stockQuantity: number;
-  desc: string;
-  category: string;
-  isFeatured: boolean;
+interface CartItem {
+  productId: {
+    _id: string;
+    name: string;
+    price: number;
+    imageUrl: string;
+  };
+  quantity: number;
 }
 
-export interface CartState {
-  productItems: Array<ProductItem>;
-  sortCriteria: "latest" | "low to high" | "high to low" | "popularity";
-  amount: number;
-  total: number;
-  page: number;
-  pages: number;
-  count:number,
+interface CartState {
+  cart: CartItem[];
   isLoading: boolean;
+  error: string | null;
 }
 
 const initialState: CartState = {
-  productItems: [],
-  sortCriteria: "latest",
-  amount: 0,
-  total: 0,
-  page: 1,
-  pages: 0,
-  count:0,
-  isLoading: true,
+  cart: [],
+  isLoading: false,
+  error: null,
 };
 
-export const getProductItems = createAsyncThunk<
-  { products: ProductItem[]; count: number; page: number; pages: number },
-  { sortCriteria: string; page: number }
->(
-  "product/getProductItems",
-  async ({ sortCriteria, page }, { rejectWithValue }) => {
-    try {
-      const { data } = await axios.get<{
-        products: ProductItem[];
-        count: number;
-        page: number;
-        pages: number;
-      }>(`${baseUrl}?sort=${sortCriteria}&page=${page}`);
-      console.log(data);
-      return data
-    } catch (error) {
-      return rejectWithValue("failed to fetch product");
-    }
+export const fetchCart = createAsyncThunk<
+  CartItem[],
+  void,
+  { rejectValue: string }
+>("cart/fetchCart", async (_, { rejectWithValue }) => {
+  try {
+    const response = await api.get<{ cart: CartItem[] }>(`${baseUrl}/cart`);
+    return response.data.cart;
+  } catch (error) {
+    return rejectWithValue("can't fetch data");
   }
-);
+});
+
+export const addToCart = createAsyncThunk<
+  CartItem[],
+  { productId: string; quantity: number },
+  { rejectValue: string }
+>("cart/addToCart", async ({ productId, quantity }, { rejectWithValue }) => {
+  try {
+    const response = await api.post(`${baseUrl}/cart/add`, {
+      productId,
+      quantity,
+    });
+    return response.data;
+  } catch (error: any) {
+    rejectWithValue(error.response.data);
+  }
+});
+
+export const removeFromCart = createAsyncThunk<
+  CartItem[],
+  string,
+  { rejectValue: string }
+>("cart/remove", async (productId, { rejectWithValue }) => {
+  try {
+    const response = await api.delete(`${baseUrl}/cart/remove/${productId}`);
+    return response.data;
+  } catch (error: any) {
+    return rejectWithValue(error.response.data);
+  }
+});
 
 const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    setSortCriteria: (state, action: PayloadAction<string>) => {
-      state.sortCriteria = action.payload as CartState["sortCriteria"];
-    },
-
-    setCurrentPage: (state, action: PayloadAction<number>) => {
-      state.page = action.payload
-    }
+  
   },
 
   extraReducers: (builder) => {
     builder
-      .addCase(getProductItems.pending, (state) => {
+      .addCase(fetchCart.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(
-        getProductItems.fulfilled,
-        (
-          state,
-          action: PayloadAction<
-         { products: ProductItem[];
-          count: number;
-          page: number,
-          pages: number}>) => {
-          state.productItems = action.payload.products;
-          state.count = action.payload.count;
-          state.page = action.payload.page;
-          state.pages = action.payload.pages;
+        fetchCart.fulfilled,
+        (state, action: PayloadAction<CartItem[]>) => {
+          state.cart = action.payload;
           state.isLoading = false;
         }
       )
-
-      .addCase(getProductItems.rejected, (state, action) => {
-        console.error("failed:", action.payload);
+      .addCase(fetchCart.rejected, (state) => {
+        state.error = "there was an error";
+      })
+      // addToCart
+      .addCase(addToCart.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(addToCart.fulfilled, (state) => {
         state.isLoading = false;
-      });
+      })
+      .addCase(
+        addToCart.rejected,
+        (state, action: PayloadAction<string | undefined>) => {
+          state.isLoading = false;
+          state.error = action.payload || "could not add to cart";
+        }
+      )
+      //removeFromCart
+      .addCase(removeFromCart.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(
+        removeFromCart.fulfilled,
+        (state, action: PayloadAction<CartItem[]>) => {
+          state.cart = action.payload;
+          state.isLoading = false;
+        }
+      )
+      .addCase(
+        removeFromCart.rejected,
+        (state, action: PayloadAction<string | undefined>) => {
+          state.isLoading = false;
+          state.error = action.payload || "could not remove cart";
+        }
+      );
   },
 });
 
-export const { setSortCriteria, setCurrentPage } = cartSlice.actions;
-
-export default cartSlice.reducer;
+export default cartSlice.reducer
